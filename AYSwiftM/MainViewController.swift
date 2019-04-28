@@ -9,7 +9,7 @@
 import UIKit
 
 class MainViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    let AYArray = ["AYToast","AYAlert","AYActionSheet","AYPicker","AYProgressHUD"]
+    let AYArray = ["AYToast","AYAlert","AYActionSheet","AYPicker","AYProgressHUD","AYPhotoPicker"]
     
     var table:UITableView!
 
@@ -62,6 +62,11 @@ class MainViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             self.perform(#selector(show2), with: nil, afterDelay: 1)
             self.perform(#selector(dimssHUD), with: nil, afterDelay: 2)
             break
+        
+        case "AYPhotoPicker":
+            AYPhotoPicker.show(6)
+            break
+            
             
         default:
             break
