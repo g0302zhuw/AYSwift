@@ -11,13 +11,23 @@ import Photos
 
 let AYitemWidth = (SCREEMW - 3) / 4
 
+class AYNavVC: UINavigationController {
+    override var childForStatusBarStyle: UIViewController? {
+        return self.topViewController
+    }
+    override var childForStatusBarHidden: UIViewController? {
+        return self.topViewController
+    }
+    
+}
+
 class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,AYPhotoCellDelegate {
     
     static func show(_ maxCount:Int){
         let picker = AYPhotoPicker()
         picker.maxCount = maxCount
-        let nav = UINavigationController(rootViewController: picker)
-        nav.navigationBar.isTranslucent = false
+        let nav = AYNavVC(rootViewController: picker)
+        nav.navigationBar.isTranslucent = true
         UIApplication.shared.keyWindow?.rootViewController?.present(nav, animated: true, completion: nil)
     }
 
@@ -60,6 +70,9 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = AYPhotoDetail()
+        vc.selectArray = selectArray
+        vc.assets = assets
+        vc.nowIndex = indexPath.row
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -76,6 +89,7 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
         self.title = "选择照片"
         self.view.backgroundColor = .white
         
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(cancelClick))
 
         okBt.frame = CGRect(x: 0, y: 0, width: 60, height: (self.navigationController?.navigationBar.frame.size.height)!)
@@ -93,7 +107,7 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
         flowlayout.minimumLineSpacing = 1
         flowlayout.minimumInteritemSpacing = 1
         
-        colletView = UICollectionView(frame: CGRect(x: 0, y: 0, width: SCREEMW, height: SCREEMH - TOPHEIGHT) ,collectionViewLayout: flowlayout)
+        colletView = UICollectionView(frame: CGRect(x: 0, y: 0, width: SCREEMW, height: SCREEMH) ,collectionViewLayout: flowlayout)
         colletView.backgroundColor = .white
         colletView.delegate = self
         colletView.dataSource = self
