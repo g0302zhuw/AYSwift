@@ -9,38 +9,48 @@
 import UIKit
 import Photos
 
-class AYPhotoDetail: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
-    var selectArray:Array<Int>!
-    var assets:PHFetchResult<PHAsset>!
+class AYPhotoDetail: UIViewController {
     var nowIndex:Int!
 
+    weak var picker:AYPhotoPicker?
+    
     var colletView:UICollectionView!
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+    var selectButton = UIButton()
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assets.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AYPhotoPickerDetailCell", for: indexPath) as! AYPhotoDetailCell
-        cell.asset = assets[indexPath.row]
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    lazy var topV:UIView! = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: SCREEMW, height: TOPHEIGHT))
+        view.alpha = 0.5
+        view.backgroundColor = .darkGray
+        
+        let backButton = UIButton(frame: CGRect(x: 0, y: view.height - 44, width: 80, height: 44))
+        backButton.setTitle("返回", for: .normal)
+        backButton.setTitleColor(.white, for: .normal)
+        backButton.addTarget(self, action: #selector(popSelf), for: .touchUpInside)
+        view.addSubview(backButton)
+        
+        return view
+    }()
 
-    }
-
+    lazy var bottomV:UIView! = {
+        let view = UIView(frame: CGRect(x: 0, y: SCREEMH - 50 - (IS_XSeries ? 34 : 0), width: SCREEMW, height: 50 + (IS_XSeries ? 34 : 0)))
+        view.alpha = 0.5
+        view.backgroundColor = .darkGray
+        
+        let backButton = UIButton(frame: CGRect(x: view.width - 80, y: 0, width: 80, height: 50))
+        backButton.setTitle("确定", for: .normal)
+        backButton.setTitleColor(.white, for: .normal)
+        backButton.addTarget(self, action: #selector(okClick), for: .touchUpInside)
+        view.addSubview(backButton)
+        
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .black
-        
         
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.itemSize = CGSize(width: SCREEMW, height: SCREEMH)
@@ -58,6 +68,39 @@ class AYPhotoDetail: UIViewController,UICollectionViewDelegate,UICollectionViewD
         if #available(iOS 11.0, *){
             colletView.contentInsetAdjustmentBehavior = .never
         }
+        
+        self.view.addSubview(topV)
+        selectButton.frame = CGRect(x: topV.width - 44, y: topV.height - 34, width: 24, height: 24)
+        selectButton.setBackgroundImage(UIImage(named: "btn_xz_nor"), for: .normal)
+        selectButton.setBackgroundImage(UIImage(named: "btn_xz_pre"), for: .selected)
+        selectButton.addTarget(self, action: #selector(selectClick(bt:)), for: .touchUpInside)
+        topV.addSubview(selectButton)
+        selectButton.isSelected = picker!.selectArray.contains(nowIndex)
+        
+        self.view.addSubview(bottomV)
+    }
+    
+    @objc func selectClick(bt:UIButton){
+        if picker!.selectArray.contains(nowIndex) {
+            picker!.selectArray.removeAll(where: {$0 == nowIndex})
+            selectButton.isSelected = !selectButton.isSelected
+        }else{
+            if picker!.selectArray.count == picker!.maxCount { //最大选择数量限制
+                AYToast.showBottom("最多选择\(picker!.maxCount)张图片")
+                return
+            }
+            picker!.selectArray.append(nowIndex)
+            selectButton.isSelected = !selectButton.isSelected
+        }
+    }
+    
+    @objc func okClick(){
+        picker?.okClick()
+    }
+    
+    
+    @objc func popSelf(){
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,52 +128,70 @@ class AYPhotoDetail: UIViewController,UICollectionViewDelegate,UICollectionViewD
 }
 
 
-
-class AYPhotoDetailCell:UICollectionViewCell,UIScrollViewDelegate{
-    var imageView = UIImageView()
-    var scroll = UIScrollView()
+extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPhotoDetailCellDelegate,UIScrollViewDelegate{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
     
-    var asset:PHAsset?{
-        didSet{
-            self.updateAsset(asset!)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return picker!.assets.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AYPhotoPickerDetailCell", for: indexPath) as! AYPhotoDetailCell
+        cell.asset = picker!.assets[indexPath.row]
+        cell.delegate = self
+        return cell
+    }
+    
+    func singleTap(_ cell:AYPhotoDetailCell){
+        if self.topV.isHidden {
+            self.topV.isHidden = false
+            self.bottomV.isHidden = false
+
+            UIView.beginAnimations("show", context: nil)
+            UIView.setAnimationCurve(UIView.AnimationCurve.easeIn)
+            UIView.setAnimationDuration(0.2)
+            self.topV.alpha = 0.5
+            self.bottomV.alpha = 0.5
+            UIView.commitAnimations()
+        }else{
+            UIView.beginAnimations("hide", context: nil)
+            UIView.setAnimationCurve(UIView.AnimationCurve.easeOut)
+            UIView.setAnimationDelegate(self)
+            UIView.setAnimationDidStop(#selector(didHide))
+            UIView.setAnimationDuration(0.2)
+            self.topV.alpha = 0.0
+            self.bottomV.alpha = 0.0
+            UIView.commitAnimations()
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        scroll.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
-        scroll.showsVerticalScrollIndicator = false
-        scroll.showsHorizontalScrollIndicator = false
-        scroll.delegate = self
-        self.contentView.addSubview(scroll)
-        scroll.maximumZoomScale = 2
-        scroll.minimumZoomScale = 1
-        
-        imageView.frame = CGRect(x: 0, y: 0, width: scroll.width, height: scroll.height)
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .black
-        scroll.addSubview(imageView)
+    @objc func didHide(){
+        self.topV.isHidden = true
+        self.bottomV.isHidden = true
     }
     
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
     }
-
-    func updateAsset(_ photo:PHAsset){
-        let manager = PHImageManager.default()
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let newIndex = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+        print("当前索引" + newIndex.description)
         
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
-        options.isNetworkAccessAllowed = true
-        
-        manager.requestImageData(for: photo, options: options) { (data, string, orientation, info) in
-            self.imageView.image = UIImage(data: data!)
+        if newIndex != nowIndex{
+            let cell = colletView.cellForItem(at: IndexPath(row: nowIndex, section: 0)) as? AYPhotoDetailCell
+            if cell != nil{ //如果之前的cell未复位，则进行scorll复位
+                cell!.scroll.setZoomScale(1, animated: false)
+            }
+            nowIndex = newIndex
         }
-        scroll.setZoomScale(1, animated: false)
+        
+        selectButton.isSelected = picker!.selectArray.contains(nowIndex)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
     }
 }

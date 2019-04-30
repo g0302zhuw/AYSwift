@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB13A4EC2277EED8004F9CD4 /* AYPhotoDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */; };
 		DB3E03AD226E9E5D00F8A1E5 /* AYTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3E03AC226E9E5D00F8A1E5 /* AYTools.swift */; };
 		DB3E03AF226E9EB900F8A1E5 /* AYAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3E03AE226E9EB900F8A1E5 /* AYAlert.swift */; };
 		DB3E03B1226E9F4700F8A1E5 /* AYAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB3E03B0226E9F4700F8A1E5 /* AYAssets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoDetailCell.swift; sourceTree = "<group>"; };
 		DB3E03AC226E9E5D00F8A1E5 /* AYTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AYTools.swift; sourceTree = "<group>"; };
 		DB3E03AE226E9EB900F8A1E5 /* AYAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AYAlert.swift; sourceTree = "<group>"; };
 		DB3E03B0226E9F4700F8A1E5 /* AYAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AYAssets.xcassets; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			children = (
 				DBB28111227575DE0009FFB5 /* AYPhotoPicker.swift */,
 				DBB28113227586510009FFB5 /* AYPhotoDetail.swift */,
+				DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */,
 			);
 			path = AYPhotoPicker;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				DBD5F02022695AEA00974736 /* MainViewController.swift in Sources */,
 				DB3E03B8226EE55000F8A1E5 /* AYProgressHUD.swift in Sources */,
 				DB3E03B5226EAA5200F8A1E5 /* AYPicker.swift in Sources */,
+				DB13A4EC2277EED8004F9CD4 /* AYPhotoDetailCell.swift in Sources */,
 				DBD5F03022695DDC00974736 /* UIView+FrameExtension.swift in Sources */,
 				DBAC56122268829D00991542 /* AppDelegate.swift in Sources */,
 				DBD5F03122695DDC00974736 /* UIImage+Extension.swift in Sources */,

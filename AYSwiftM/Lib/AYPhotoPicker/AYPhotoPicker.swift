@@ -23,8 +23,9 @@ class AYNavVC: UINavigationController {
 
 class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,AYPhotoCellDelegate {
     
-    static func show(_ maxCount:Int){
+    static func show(_ maxCount:Int,block:((_ imageArray:Array<UIImage>)->Void)?){
         let picker = AYPhotoPicker()
+        picker.block = block
         picker.maxCount = maxCount
         let nav = AYNavVC(rootViewController: picker)
         nav.navigationBar.isTranslucent = true
@@ -33,6 +34,8 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
 
     
     var colletView:UICollectionView!
+    
+    var block:((_ imageArray:Array<UIImage>)->Void)?
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -70,9 +73,8 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = AYPhotoDetail()
-        vc.selectArray = selectArray
-        vc.assets = assets
         vc.nowIndex = indexPath.row
+        vc.picker = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -80,7 +82,7 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
 
     var maxCount = 1
     var assets:PHFetchResult<PHAsset>!
-    var selectArray = [Int]()
+    var selectArray:Array<Int> = [Int]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,13 +121,46 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
     }
     
     @objc func okClick(){
+        if selectArray.count == 0 {
+            return;
+        }
         
+        let manager = PHImageManager.default()
+
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        options.version = .current
+        
+        let group = DispatchGroup()
+        
+        var imageArray = [UIImage]()
+        for i in 0...selectArray.count - 1 {
+            group.enter()
+            manager.requestImage(for: assets[selectArray[i]], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: options) { (image, info) in
+                if image != nil {
+                    imageArray.append(image!)
+                    group.leave()
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if self.block != nil {
+                self.block!(imageArray)
+            }
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        print(selectArray)
+        
         colletView.reloadData()
+        okBt.setTitle("确定(\(selectArray.count))", for: .normal)
+        okBt.isEnabled = (selectArray.count > 0)
     }
     
     override func viewDidLayoutSubviews() {
@@ -167,6 +202,8 @@ class AYPhotoCell:UICollectionViewCell{
         super.init(frame: frame)
         
         imageView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .lightGray
         self.contentView.addSubview(imageView)
         
@@ -185,7 +222,7 @@ class AYPhotoCell:UICollectionViewCell{
     
     func updateAsset(_ photo:PHAsset){
         let manager = PHImageManager.default()
-        manager.requestImage(for: photo, targetSize: CGSize(width: AYitemWidth, height: AYitemWidth), contentMode: .aspectFill, options: nil) { (image, info) in
+        manager.requestImage(for: photo, targetSize: CGSize(width: AYitemWidth * 1.5, height: AYitemWidth * 1.5), contentMode: .aspectFit, options: nil) { (image, info) in
             self.imageView.image = image
         }
     }

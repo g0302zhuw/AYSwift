@@ -64,7 +64,11 @@ class MainViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             break
         
         case "AYPhotoPicker":
-            AYPhotoPicker.show(6)
+            AYPhotoPicker.show(6) { (array) in
+                let v1 = UIImageView(image: array[0])
+                v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+                self.view.addSubview(v1)
+            }
             break
             
             
