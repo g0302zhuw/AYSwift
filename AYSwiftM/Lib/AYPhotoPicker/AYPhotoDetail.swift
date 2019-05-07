@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class AYPhotoDetail: UIViewController {
+class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
     var nowIndex:Int!
 
     weak var picker:AYPhotoPicker?
@@ -54,14 +54,15 @@ class AYPhotoDetail: UIViewController {
         
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.itemSize = CGSize(width: SCREEMW, height: SCREEMH)
-        flowlayout.minimumLineSpacing = 0
-        flowlayout.minimumInteritemSpacing = 0
+        flowlayout.minimumLineSpacing = 20
+        flowlayout.minimumInteritemSpacing = 5
         flowlayout.scrollDirection = .horizontal
         
-        colletView = UICollectionView(frame: CGRect(x: 0, y: 0, width: SCREEMW, height: SCREEMH) ,collectionViewLayout: flowlayout)
+        colletView = UICollectionView(frame: CGRect(x: 0, y: 0, width: SCREEMW + 20, height: SCREEMH) ,collectionViewLayout: flowlayout)
         colletView.backgroundColor = .black
         colletView.delegate = self
         colletView.dataSource = self
+        colletView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         colletView.isPagingEnabled = true
         colletView.register(AYPhotoDetailCell.self, forCellWithReuseIdentifier: "AYPhotoPickerDetailCell")
         self.view.addSubview(colletView)
@@ -104,7 +105,7 @@ class AYPhotoDetail: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        print("viewDidLayoutSubviews")
+        print("AYPhotoDetail - viewDidLayoutSubviews")
         colletView.scrollToItem(at: IndexPath(row: nowIndex, section: 0), at: .centeredHorizontally, animated: false)
     }
 
@@ -164,6 +165,17 @@ extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPh
             self.topV.alpha = 0.0
             self.bottomV.alpha = 0.0
             UIView.commitAnimations()
+        }
+    }
+    
+    func dragStart() {
+        self.colletView.isScrollEnabled = false
+    }
+    
+    func dragEnd(_ close: Bool) {
+        self.colletView.isScrollEnabled = true
+        if close {
+//            self.navigationController?.popViewController(animated: true)
         }
     }
     

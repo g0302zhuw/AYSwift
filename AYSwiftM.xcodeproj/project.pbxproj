@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB13A4EC2277EED8004F9CD4 /* AYPhotoDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */; };
+		DB13A4EF227843D9004F9CD4 /* AYImageBrower.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB13A4EE227843D9004F9CD4 /* AYImageBrower.swift */; };
 		DB3E03AD226E9E5D00F8A1E5 /* AYTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3E03AC226E9E5D00F8A1E5 /* AYTools.swift */; };
 		DB3E03AF226E9EB900F8A1E5 /* AYAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3E03AE226E9EB900F8A1E5 /* AYAlert.swift */; };
 		DB3E03B1226E9F4700F8A1E5 /* AYAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB3E03B0226E9F4700F8A1E5 /* AYAssets.xcassets */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoDetailCell.swift; sourceTree = "<group>"; };
+		DB13A4EE227843D9004F9CD4 /* AYImageBrower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYImageBrower.swift; sourceTree = "<group>"; };
 		DB3E03AC226E9E5D00F8A1E5 /* AYTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AYTools.swift; sourceTree = "<group>"; };
 		DB3E03AE226E9EB900F8A1E5 /* AYAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AYAlert.swift; sourceTree = "<group>"; };
 		DB3E03B0226E9F4700F8A1E5 /* AYAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AYAssets.xcassets; sourceTree = "<group>"; };
@@ -67,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB13A4ED227843B0004F9CD4 /* AYImageBrower */ = {
+			isa = PBXGroup;
+			children = (
+				DB13A4EE227843D9004F9CD4 /* AYImageBrower.swift */,
+			);
+			path = AYImageBrower;
+			sourceTree = "<group>";
+		};
 		DB3E03B6226EAF6B00F8A1E5 /* AYProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				DB3E03AC226E9E5D00F8A1E5 /* AYTools.swift */,
+				DB13A4ED227843B0004F9CD4 /* AYImageBrower */,
 				DBB28110227575B70009FFB5 /* AYPhotoPicker */,
 				DB3E03B6226EAF6B00F8A1E5 /* AYProgressHUD */,
 				DBD5F02722695D7A00974736 /* AYToast */,
@@ -263,6 +274,7 @@
 				DBD5F03522695DDC00974736 /* NSDecimalNumber+Extension.swift in Sources */,
 				DBB28114227586510009FFB5 /* AYPhotoDetail.swift in Sources */,
 				DBD5F038226961D300974736 /* AYToast.swift in Sources */,
+				DB13A4EF227843D9004F9CD4 /* AYImageBrower.swift in Sources */,
 				DBD5F02022695AEA00974736 /* MainViewController.swift in Sources */,
 				DB3E03B8226EE55000F8A1E5 /* AYProgressHUD.swift in Sources */,
 				DB3E03B5226EAA5200F8A1E5 /* AYPicker.swift in Sources */,
