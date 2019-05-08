@@ -75,7 +75,10 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
         let vc = AYPhotoDetail()
         vc.nowIndex = indexPath.row
         vc.picker = self
-        self.navigationController?.pushViewController(vc, animated: true)
+        vc.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+        vc.modalPresentationCapturesStatusBarAppearance = true
+        self.present(vc, animated: true) {
+        }
     }
     
     var okBt = UIButton()
@@ -153,9 +156,7 @@ class AYPhotoPicker: UIViewController,UICollectionViewDelegate,UICollectionViewD
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    func reloadSelect(){
         print(selectArray)
         
         colletView.reloadData()

@@ -9,10 +9,16 @@
 import UIKit
 import Photos
 
+enum dragAnimation{
+    case start
+    case on
+    case cancel
+    case dismiss
+}
+
 protocol AYPhotoDetailCellDelegate:NSObjectProtocol {
     func singleTap(_ cell:AYPhotoDetailCell)
-    func dragStart()
-    func dragEnd(_ close:Bool)
+    func dragState(_ state:dragAnimation,scale:CGFloat)
 }
 
 class AYPhotoDetailCell:UICollectionViewCell{
@@ -172,12 +178,21 @@ extension AYPhotoDetailCell:UIScrollViewDelegate{
         zoomStart = false
         
         if self.animationImageView.superview != nil {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.animationImageView.frame = self.frameOfOriginalOfImageView
-            }) { (_) in
-                self.scroll.contentOffset = self.startOffsetOfScrollView
-                self.animationImageView.removeFromSuperview()
-                self.imageView.isHidden = false
+            if totalOffsetY > self.frame.size.height / 2 {
+                if self.delegate != nil {
+                    self.delegate?.dragState(.dismiss, scale: 1)
+                }
+            }else{
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.animationImageView.frame = self.frameOfOriginalOfImageView
+                }) { (_) in
+                    if self.delegate != nil {
+                        self.delegate?.dragState(.cancel, scale: 1)
+                    }
+                    self.scroll.contentOffset = self.startOffsetOfScrollView
+                    self.animationImageView.removeFromSuperview()
+                    self.imageView.isHidden = false
+                }
             }
         }
     }
@@ -197,7 +212,7 @@ extension AYPhotoDetailCell:UIScrollViewDelegate{
         }
         
         let point = pan.location(in: self)
-        if scrollView.contentOffset.y < -10 && point.y > lastPointY && abs(point.y) > abs(point.x) && self.animationImageView.superview == nil {
+        if scrollView.contentOffset.y < -10 && abs(scrollView.contentOffset.x) < 10 && point.y > lastPointY && abs(point.y) > abs(point.x) && self.animationImageView.superview == nil {
             print("添加动画视图")
             self.imageView.isHidden = true//临时处理，隐藏原imageview
             totalOffsetY = 0
@@ -206,6 +221,10 @@ extension AYPhotoDetailCell:UIScrollViewDelegate{
             self.animationImageView.image = self.imageView.image
             self.animationImageView.frame = frameOfOriginalOfImageView
             UIApplication.shared.keyWindow?.addSubview(self.animationImageView)
+            
+            if self.delegate != nil {
+                self.delegate?.dragState(.start, scale: 1)
+            }
         }
         
         if pan.state == .changed {
@@ -232,6 +251,8 @@ extension AYPhotoDetailCell:UIScrollViewDelegate{
                 let width = frameOfOriginalOfImageView.size.width * scale
                 let height = frameOfOriginalOfImageView.size.height * scale
                 self.animationImageView.frame = CGRect(x: point.x - width * startScaleWidthInAnimationView, y: point.y - height * startScaleheightInAnimationView, width: width, height: height)
+                
+                self.delegate?.dragState(.on, scale: scale)
             }
         }
 

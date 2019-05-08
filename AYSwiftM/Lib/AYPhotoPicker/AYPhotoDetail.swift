@@ -18,6 +18,8 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
     
     var selectButton = UIButton()
     
+    var transAnimationManager = AYPhotoTransAnimation()
+    
     lazy var topV:UIView! = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: SCREEMW, height: TOPHEIGHT))
         view.alpha = 0.5
@@ -26,7 +28,7 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
         let backButton = UIButton(frame: CGRect(x: 0, y: view.height - 44, width: 80, height: 44))
         backButton.setTitle("返回", for: .normal)
         backButton.setTitleColor(.white, for: .normal)
-        backButton.addTarget(self, action: #selector(popSelf), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
         view.addSubview(backButton)
         
         return view
@@ -50,7 +52,9 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = .black
+        self.modalPresentationStyle = .custom
+
+        self.transitioningDelegate = self
         
         let flowlayout = UICollectionViewFlowLayout()
         flowlayout.itemSize = CGSize(width: SCREEMW, height: SCREEMH)
@@ -100,8 +104,11 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
     }
     
     
-    @objc func popSelf(){
-        self.navigationController?.popViewController(animated: true)
+    @objc func dismissSelf(){
+        picker?.reloadSelect()
+        self.dismiss(animated: true) {
+            
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -111,12 +118,10 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override var prefersStatusBarHidden: Bool{
@@ -129,7 +134,7 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
 }
 
 
-extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPhotoDetailCellDelegate,UIScrollViewDelegate{
+extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPhotoDetailCellDelegate,UIScrollViewDelegate,UIViewControllerTransitioningDelegate{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -168,14 +173,18 @@ extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPh
         }
     }
     
-    func dragStart() {
-        self.colletView.isScrollEnabled = false
-    }
-    
-    func dragEnd(_ close: Bool) {
-        self.colletView.isScrollEnabled = true
-        if close {
-//            self.navigationController?.popViewController(animated: true)
+    func dragState(_ state: dragAnimation, scale: CGFloat) {
+        if state == .start {
+            self.colletView.isScrollEnabled = false
+            self.topV.isHidden = true
+            self.bottomV.isHidden = true
+        }else if state == .on {
+            self.colletView.alpha = scale
+        }else if state == .cancel {
+            self.colletView.isScrollEnabled = true
+            self.colletView.alpha = 1
+        }else if state == .dismiss {
+            self.dismissSelf()
         }
     }
     
@@ -205,5 +214,15 @@ extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPh
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
+    }
+    
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning?{
+        return transAnimationManager
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transAnimationManager.vc = self
+        return transAnimationManager
     }
 }

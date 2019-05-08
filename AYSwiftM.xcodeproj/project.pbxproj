@@ -29,6 +29,7 @@
 		DBD5F03522695DDC00974736 /* NSDecimalNumber+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD5F02E22695DDC00974736 /* NSDecimalNumber+Extension.swift */; };
 		DBD5F03622695DDC00974736 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD5F02F22695DDC00974736 /* UIColor+Extension.swift */; };
 		DBD5F038226961D300974736 /* AYToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD5F037226961D300974736 /* AYToast.swift */; };
+		DBFC92F222826E2B0091B479 /* AYPhotoTransAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFC92F122826E2B0091B479 /* AYPhotoTransAnimation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		DBD5F02E22695DDC00974736 /* NSDecimalNumber+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDecimalNumber+Extension.swift"; sourceTree = "<group>"; };
 		DBD5F02F22695DDC00974736 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		DBD5F037226961D300974736 /* AYToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AYToast.swift; sourceTree = "<group>"; };
+		DBFC92F122826E2B0091B479 /* AYPhotoTransAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoTransAnimation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				DBB28111227575DE0009FFB5 /* AYPhotoPicker.swift */,
 				DBB28113227586510009FFB5 /* AYPhotoDetail.swift */,
 				DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */,
+				DBFC92F122826E2B0091B479 /* AYPhotoTransAnimation.swift */,
 			);
 			path = AYPhotoPicker;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				DBD5F038226961D300974736 /* AYToast.swift in Sources */,
 				DB13A4EF227843D9004F9CD4 /* AYImageBrower.swift in Sources */,
 				DBD5F02022695AEA00974736 /* MainViewController.swift in Sources */,
+				DBFC92F222826E2B0091B479 /* AYPhotoTransAnimation.swift in Sources */,
 				DB3E03B8226EE55000F8A1E5 /* AYProgressHUD.swift in Sources */,
 				DB3E03B5226EAA5200F8A1E5 /* AYPicker.swift in Sources */,
 				DB13A4EC2277EED8004F9CD4 /* AYPhotoDetailCell.swift in Sources */,
