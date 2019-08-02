@@ -18,6 +18,8 @@
 		DBAC56122268829D00991542 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAC56112268829D00991542 /* AppDelegate.swift */; };
 		DBAC56192268829F00991542 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBAC56182268829F00991542 /* Assets.xcassets */; };
 		DBAC561C2268829F00991542 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBAC561A2268829F00991542 /* LaunchScreen.storyboard */; };
+		DBB12BF722F3C41D002F520D /* AYAlbumListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB12BF622F3C41D002F520D /* AYAlbumListVC.swift */; };
+		DBB12BF922F3C50E002F520D /* AYPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB12BF822F3C50E002F520D /* AYPhotoCell.swift */; };
 		DBB28112227575DE0009FFB5 /* AYPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB28111227575DE0009FFB5 /* AYPhotoPicker.swift */; };
 		DBB28114227586510009FFB5 /* AYPhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB28113227586510009FFB5 /* AYPhotoDetail.swift */; };
 		DBD5F02022695AEA00974736 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD5F01F22695AEA00974736 /* MainViewController.swift */; };
@@ -46,6 +48,8 @@
 		DBAC56182268829F00991542 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBAC561B2268829F00991542 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBAC561D2268829F00991542 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBB12BF622F3C41D002F520D /* AYAlbumListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYAlbumListVC.swift; sourceTree = "<group>"; };
+		DBB12BF822F3C50E002F520D /* AYPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoCell.swift; sourceTree = "<group>"; };
 		DBB28111227575DE0009FFB5 /* AYPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoPicker.swift; sourceTree = "<group>"; };
 		DBB28113227586510009FFB5 /* AYPhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AYPhotoDetail.swift; sourceTree = "<group>"; };
 		DBD5F01F22695AEA00974736 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -121,7 +125,9 @@
 		DBB28110227575B70009FFB5 /* AYPhotoPicker */ = {
 			isa = PBXGroup;
 			children = (
+				DBB12BF622F3C41D002F520D /* AYAlbumListVC.swift */,
 				DBB28111227575DE0009FFB5 /* AYPhotoPicker.swift */,
+				DBB12BF822F3C50E002F520D /* AYPhotoCell.swift */,
 				DBB28113227586510009FFB5 /* AYPhotoDetail.swift */,
 				DB13A4EB2277EED8004F9CD4 /* AYPhotoDetailCell.swift */,
 				DBFC92F122826E2B0091B479 /* AYPhotoTransAnimation.swift */,
@@ -283,8 +289,10 @@
 				DB3E03B8226EE55000F8A1E5 /* AYProgressHUD.swift in Sources */,
 				DB3E03B5226EAA5200F8A1E5 /* AYPicker.swift in Sources */,
 				DB13A4EC2277EED8004F9CD4 /* AYPhotoDetailCell.swift in Sources */,
+				DBB12BF922F3C50E002F520D /* AYPhotoCell.swift in Sources */,
 				DBD5F03022695DDC00974736 /* UIView+FrameExtension.swift in Sources */,
 				DBAC56122268829D00991542 /* AppDelegate.swift in Sources */,
+				DBB12BF722F3C41D002F520D /* AYAlbumListVC.swift in Sources */,
 				DBD5F03122695DDC00974736 /* UIImage+Extension.swift in Sources */,
 				DB3E03AF226E9EB900F8A1E5 /* AYAlert.swift in Sources */,
 				DB3E03AD226E9E5D00F8A1E5 /* AYTools.swift in Sources */,

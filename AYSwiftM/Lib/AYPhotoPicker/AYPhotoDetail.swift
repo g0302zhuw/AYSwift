@@ -101,6 +101,7 @@ class AYPhotoDetail: UIViewController,UIGestureRecognizerDelegate {
     
     @objc func okClick(){
         picker?.okClick()
+        self.dismiss(animated: false, completion: nil)
     }
     
     
@@ -140,12 +141,12 @@ extension AYPhotoDetail:UICollectionViewDelegate,UICollectionViewDataSource,AYPh
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return picker!.assets.count
+        return picker!.assets!.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AYPhotoPickerDetailCell", for: indexPath) as! AYPhotoDetailCell
-        cell.asset = picker!.assets[indexPath.row]
+        cell.asset = picker!.assets![indexPath.row]
         cell.delegate = self
         return cell
     }
